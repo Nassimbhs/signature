@@ -1,0 +1,268 @@
+.signature-container {
+  text-align: center;
+  padding: 20px;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #451771;
+  margin-bottom: 25px;
+}
+
+/* Zone de signature avec fond alterné pour visualisation */
+.signature-area {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.transparent-background {
+  background-image: 
+    linear-gradient(45deg, #f0f0f0 25%, transparent 25%),
+    linear-gradient(-45deg, #f0f0f0 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #f0f0f0 75%),
+    linear-gradient(-45deg, transparent 75%, #f0f0f0 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  border-radius: 8px;
+  padding: 10px;
+  display: inline-block;
+}
+
+canvas {
+  background: transparent !important; /* Fond transparent */
+  border-radius: 5px;
+  border: 2px dashed #d2d5da;
+  cursor: crosshair;
+  display: block;
+  touch-action: none;
+}
+
+/* Contrôles d'épaisseur */
+.line-width-controls {
+  margin-bottom: 15px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.line-width-controls label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.width-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-width {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #451771;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-width:hover {
+  background: #361156;
+}
+
+.width-slider {
+  width: 200px;
+  height: 6px;
+  border-radius: 3px;
+  background: #ddd;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.width-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #451771;
+  cursor: pointer;
+}
+
+.width-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #451771;
+  cursor: pointer;
+  border: none;
+}
+
+/* Contrôles de couleur */
+.color-controls {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.color-controls label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.color-options {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.color-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.color-btn:hover {
+  transform: scale(1.1);
+}
+
+.color-btn.active {
+  border-color: #333;
+  transform: scale(1.1);
+}
+
+.color-btn.black { background: #000000; }
+.color-btn.blue { background: #0000ff; }
+.color-btn.red { background: #ff0000; }
+.color-btn.green { background: #008000; }
+
+/* Actions */
+.signature-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  user-select: none;
+  min-width: 120px;
+}
+
+.btn-clear {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-clear:hover {
+  background-color: #5a6268;
+}
+
+.btn-save {
+  background-color: #451771;
+  color: white;
+}
+
+.btn-save:hover {
+  background-color: #361156;
+}
+
+.btn-copy {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-copy:hover {
+  background-color: #218838;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.signature-hint {
+  margin-top: 15px;
+}
+
+.signature-hint p {
+  font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+
+.file-info {
+  font-size: 12px !important;
+  color: #28a745 !important;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .signature-container {
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  canvas {
+    width: 100%;
+    max-width: 380px;
+    height: 140px;
+  }
+  
+  .transparent-background {
+    padding: 5px;
+  }
+  
+  .signature-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .btn {
+    width: 200px;
+  }
+  
+  .width-slider {
+    width: 150px;
+  }
+}

@@ -1,0 +1,52 @@
+<div class="card flex justify-content-center align-items-center min-h-screen p-3 col-12">
+  <p-panel header="Signature Électronique📝">
+    <div class="signature-container">
+      <h1></h1>
+
+
+      <!-- Contrôle de l'épaisseur -->
+      <div class="line-width-controls">
+        <label>Épaisseur du trait: {{ lineWidth }}px</label>
+        <div class="width-buttons">
+          <button class="btn btn-width" (click)="decreaseLineWidth()">−</button>
+          <input type="range" [min]="minLineWidth" [max]="maxLineWidth" [value]="lineWidth"
+            (input)="setLineWidth($any($event.target).valueAsNumber)" class="width-slider">
+          <button class="btn btn-width" (click)="increaseLineWidth()">+</button>
+        </div>
+      </div>
+
+      <!-- Contrôle de couleur -->
+      <div class="color-controls">
+        <label>Couleur du trait:</label>
+        <div class="color-options">
+          <button class="color-btn black" (click)="setStrokeColor('#000000')"
+            [class.active]="strokeColor === '#000000'"></button>
+          <button class="color-btn blue" (click)="setStrokeColor('#0000ff')"
+            [class.active]="strokeColor === '#0000ff'"></button>
+          <button class="color-btn red" (click)="setStrokeColor('#ff0000')"
+            [class.active]="strokeColor === '#ff0000'"></button>
+          <button class="color-btn green" (click)="setStrokeColor('#008000')"
+            [class.active]="strokeColor === '#008000'"></button>
+        </div>
+      </div>
+
+      <!-- Zone de signature avec fond alterné pour visualisation -->
+      <div class="signature-area">
+        <div class="transparent-background">
+          <canvas #signatureCanvas width="420" height="160">
+            Votre navigateur ne supporte pas canvas.
+          </canvas>
+        </div>
+      </div>
+
+      <div class="signature-actions">
+        <button class="btn btn-clear" (click)="clearSignature()">Effacer</button>
+        <button class="btn btn-save" (click)="saveSignature()">Télécharger PNG</button>
+      </div>
+
+      <div class="signature-hint">
+        <p>👆 Dessinez votre signature - 📥 Téléchargez en PNG transparent</p>
+      </div>
+    </div>
+  </p-panel>
+</div>
