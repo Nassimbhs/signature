@@ -4,6 +4,7 @@ import { PanelModule } from 'primeng/panel';
 import { SliderModule } from 'primeng/slider';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { jsPDF } from 'jspdf';
 
 interface DrawingState {
   drawing: boolean;
@@ -330,5 +331,78 @@ export class SignatureComponent implements AfterViewInit, OnDestroy {
     return true;
   }
 
+  // Helpers: base64 handling and downloads
+  private ensureBase64DataUrl(base64: string, mime: string = 'image/png'): string {
+    if (!base64) {
+      return `data:${mime};base64,`;
+    }
+    return base64.startsWith('data:') ? base64 : `data:${mime};base64,${base64}`;
+  }
 
+  private base64ToBlob(base64: string, contentType: string = 'image/png'): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
+  }
+
+  downloadBase64AsPng(fileName: string, base64: string): void {
+    const dataUrl = this.ensureBase64DataUrl(base64, 'image/png');
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = fileName.endsWith('.png') ? fileName : `${fileName}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+
+  downloadBase64AsPdf(fileName: string, base64: string): void {
+    const dataUrl = this.ensureBase64DataUrl(base64, 'image/png');
+
+    const img = new Image();
+    img.onload = () => {
+      const pdf = new jsPDF({ orientation: 'p', unit: 'pt', format: 'a4' });
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+
+      const imgWidth = img.naturalWidth || img.width;
+      const imgHeight = img.naturalHeight || img.height;
+
+      const scale = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+      const renderWidth = imgWidth * scale;
+      const renderHeight = imgHeight * scale;
+      const x = (pageWidth - renderWidth) / 2;
+      const y = (pageHeight - renderHeight) / 2;
+
+      pdf.addImage(dataUrl, 'PNG', x, y, renderWidth, renderHeight);
+      const outName = fileName.endsWith('.pdf') ? fileName : `${fileName}.pdf`;
+      pdf.save(outName);
+    };
+    img.onerror = () => {
+      console.error('Failed to load base64 image. Ensure it is a valid PNG base64 string.');
+    };
+    img.src = dataUrl;
+  }
+
+  // Public convenience methods
+  downloadCurrentSignatureAsPng(): void {
+    const dataUrl = this.getSignatureWithoutBackground();
+    this.downloadBase64AsPng(`signature-${Date.now()}`, dataUrl);
+  }
+
+  downloadCurrentSignatureAsPdf(): void {
+    if (this.isEmpty()) {
+      return;
+    }
+    const dataUrl = this.getSignatureWithoutBackground();
+    this.downloadBase64AsPdf(`signature-${Date.now()}`, dataUrl);
+  }
+
+  // Download any provided PNG base64 (without data URL) as PDF
+  downloadProvidedBase64AsPdf(base64: string): void {
+    this.downloadBase64AsPdf('signature', base64);
+  }
 }
