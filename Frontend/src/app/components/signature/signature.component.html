@@ -1,52 +1,111 @@
-<div class="card flex justify-content-center align-items-center min-h-screen p-3 col-12">
-  <p-panel header="Signature Électronique📝">
-    <div class="signature-container">
-      <h1></h1>
-
-
-      <!-- Contrôle de l'épaisseur -->
-      <div class="line-width-controls">
-        <label>Épaisseur du trait: {{ lineWidth }}px</label>
-        <div class="width-buttons">
-          <button class="btn btn-width" (click)="decreaseLineWidth()">−</button>
-          <input type="range" [min]="minLineWidth" [max]="maxLineWidth" [value]="lineWidth"
-            (input)="setLineWidth($any($event.target).valueAsNumber)" class="width-slider">
-          <button class="btn btn-width" (click)="increaseLineWidth()">+</button>
-        </div>
+<div class="flex justify-content-center align-items-center min-h-screen p-3">
+  <p-card styleClass="w-full max-w-30rem">
+    <ng-template pTemplate="header">
+      <div class="text-center p-3">
+        <h2 class="m-0 text-primary">Signature Électronique 📝</h2>
       </div>
+    </ng-template>
+    
+    <div class="text-center">
+      <!-- Contrôle de l'épaisseur -->
+      <p-panel header="Épaisseur du trait" styleClass="mb-3">
+        <div class="flex flex-column gap-3">
+          <div class="text-center">
+            <span class="text-lg font-semibold text-primary">{{ lineWidth }}px</span>
+          </div>
+          <div class="flex align-items-center justify-content-center gap-3">
+            <p-button 
+              icon="pi pi-minus" 
+              styleClass="p-button-text p-button-rounded" 
+              size="small"
+              (onClick)="decreaseLineWidth()"
+              [disabled]="lineWidth <= minLineWidth">
+            </p-button>
+            <p-slider 
+              [(ngModel)]="lineWidth"
+              [min]="minLineWidth" 
+              [max]="maxLineWidth"
+              styleClass="w-12rem"
+              (onChange)="setLineWidth($event.value)">
+            </p-slider>
+            <p-button 
+              icon="pi pi-plus" 
+              styleClass="p-button-text p-button-rounded" 
+              size="small"
+              (onClick)="increaseLineWidth()"
+              [disabled]="lineWidth >= maxLineWidth">
+            </p-button>
+          </div>
+        </div>
+      </p-panel>
 
       <!-- Contrôle de couleur -->
-      <div class="color-controls">
-        <label>Couleur du trait:</label>
-        <div class="color-options">
-          <button class="color-btn black" (click)="setStrokeColor('#000000')"
-            [class.active]="strokeColor === '#000000'"></button>
-          <button class="color-btn blue" (click)="setStrokeColor('#0000ff')"
-            [class.active]="strokeColor === '#0000ff'"></button>
-          <button class="color-btn red" (click)="setStrokeColor('#ff0000')"
-            [class.active]="strokeColor === '#ff0000'"></button>
-          <button class="color-btn green" (click)="setStrokeColor('#008000')"
-            [class.active]="strokeColor === '#008000'"></button>
+      <p-panel header="Couleur du trait" styleClass="mb-3">
+        <div class="flex justify-content-center gap-3">
+          <p-button 
+            [style]="{'background-color': '#000000', 'border-color': '#000000'}"
+            [class]="strokeColor === '#000000' ? 'p-button-raised' : ''"
+            styleClass="p-button-rounded" 
+            size="small"
+            (onClick)="setStrokeColor('#000000')">
+          </p-button>
+          <p-button 
+            [style]="{'background-color': '#0000ff', 'border-color': '#0000ff'}"
+            [class]="strokeColor === '#0000ff' ? 'p-button-raised' : ''"
+            styleClass="p-button-rounded" 
+            size="small"
+            (onClick)="setStrokeColor('#0000ff')">
+          </p-button>
+          <p-button 
+            [style]="{'background-color': '#ff0000', 'border-color': '#ff0000'}"
+            [class]="strokeColor === '#ff0000' ? 'p-button-raised' : ''"
+            styleClass="p-button-rounded" 
+            size="small"
+            (onClick)="setStrokeColor('#ff0000')">
+          </p-button>
+          <p-button 
+            [style]="{'background-color': '#008000', 'border-color': '#008000'}"
+            [class]="strokeColor === '#008000' ? 'p-button-raised' : ''"
+            styleClass="p-button-rounded" 
+            size="small"
+            (onClick)="setStrokeColor('#008000')">
+          </p-button>
         </div>
-      </div>
+      </p-panel>
 
-      <!-- Zone de signature avec fond alterné pour visualisation -->
-      <div class="signature-area">
-        <div class="transparent-background">
-          <canvas #signatureCanvas width="420" height="160">
-            Votre navigateur ne supporte pas canvas.
-          </canvas>
+      <!-- Zone de signature -->
+      <p-panel header="Zone de signature" styleClass="mb-3">
+        <div class="flex justify-content-center">
+          <div class="transparent-background">
+            <canvas #signatureCanvas width="420" height="160">
+              Votre navigateur ne supporte pas canvas.
+            </canvas>
+          </div>
         </div>
+      </p-panel>
+
+      <!-- Actions -->
+      <div class="flex justify-content-center gap-2 mb-3">
+        <p-button 
+          label="Effacer" 
+          icon="pi pi-trash" 
+          severity="secondary"
+          (onClick)="clearSignature()">
+        </p-button>
+        <p-button 
+          label="Télécharger PNG" 
+          icon="pi pi-download" 
+          severity="success"
+          (onClick)="saveSignature()">
+        </p-button>
       </div>
 
-      <div class="signature-actions">
-        <button class="btn btn-clear" (click)="clearSignature()">Effacer</button>
-        <button class="btn btn-save" (click)="saveSignature()">Télécharger PNG</button>
-      </div>
-
-      <div class="signature-hint">
-        <p>👆 Dessinez votre signature - 📥 Téléchargez en PNG transparent</p>
+      <!-- Hint -->
+      <div class="text-center">
+        <p class="text-sm text-600 m-0">
+          👆 Dessinez votre signature - 📥 Téléchargez en PNG transparent
+        </p>
       </div>
     </div>
-  </p-panel>
+  </p-card>
 </div>

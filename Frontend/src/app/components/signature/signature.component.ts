@@ -3,6 +3,7 @@ import { SignatureService } from 'src/app/service/signature.service';
 import { PanelModule } from 'primeng/panel';
 import { SliderModule } from 'primeng/slider';
 import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { FormsModule } from '@angular/forms';
 import { jsPDF } from 'jspdf';
 
@@ -20,9 +21,9 @@ interface DrawingState {
   imports: [
     FormsModule,
     PanelModule,
-    PanelModule,
     SliderModule,
-    ButtonModule
+    ButtonModule,
+    CardModule
   ]
 })
 export class SignatureComponent implements AfterViewInit, OnDestroy {
